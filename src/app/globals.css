@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;900&display=swap");
+
+html {
+  direction: rtl;
+}
+
+body {
+  background-color: #141413;
+  color: #faf9f5;
+}
+
+::selection {
+  background: #d97757;
+  color: #141413;
+}
+
+.btn-primary {
+  @apply inline-flex items-center justify-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-bold text-bg transition hover:bg-accent2 disabled:cursor-not-allowed disabled:opacity-50;
+}
+
+.btn-ghost {
+  @apply inline-flex items-center justify-center gap-2 rounded-full border border-border px-6 py-3 text-sm font-semibold text-ink transition hover:border-faint;
+}
+
+.input {
+  @apply w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm text-ink placeholder:text-faint outline-none transition focus:border-accent;
+}
+
+.card {
+  @apply rounded-2xl border border-border bg-surface p-6;
+}
