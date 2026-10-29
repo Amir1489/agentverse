@@ -6,7 +6,7 @@
 
 - **فرانت‌اند**: Next.js 14 (App Router) + TypeScript + Tailwind CSS
 - **بک‌اند**: Next.js Route Handlers (API) روی همان پروژه
-- **دیتابیس**: Prisma ORM + SQLite (پیش‌فرض، بدون نیاز به نصب چیزی) — با یک تغییر کوچک قابل سوییچ به PostgreSQL
+- **دیتابیس**: Prisma ORM + PostgreSQL (برای کارکردن روی هاست‌های سرورلس مثل Netlify/Vercel؛ یک دیتابیس رایگان مثل Neon یا Supabase کافی است) — برای توسعهٔ محلی بدون Postgres می‌توانید provider را به SQLite سوییچ کنید
 - **احراز هویت**: ایمیل/رمز عبور، هش با bcrypt، نشست (session) با JWT در کوکی httpOnly + جدول Session در دیتابیس (قابل invalidate کردن)
 - **ایجنت**: اگر `ANTHROPIC_API_KEY` تنظیم شود به API واقعی claude وصل می‌شود؛ در غیر این صورت یک پاسخ نمایشی (mock) برمی‌گرداند تا کل جریان برنامه (ثبت‌نام → گفتگو → پاسخ) بدون کلید هم کار کند.
 
@@ -32,8 +32,8 @@
 
 ```bash
 npm install
-cp .env.example .env     # و JWT_SECRET را با یک مقدار تصادفی پر کنید
-npx prisma db push       # ساخت جدول‌های دیتابیس SQLite
+cp .env.example .env     # DATABASE_URL را به یک Postgres واقعی (مثلاً Neon رایگان) و JWT_SECRET را به یک مقدار تصادفی تنظیم کنید
+npx prisma db push       # ساخت جدول‌های دیتابیس
 npm run dev
 ```
 
@@ -56,12 +56,13 @@ ANTHROPIC_MODEL="claude-sonnet-4-5"
 npm run db:studio
 ```
 
-## استقرار (Deploy)
+## استقرار (Deploy) — مثلاً روی Netlify
 
-برای production:
-1. `prisma/schema.prisma` → `provider` را به `postgresql` تغییر دهید و یک `DATABASE_URL` واقعی (مثلاً از Neon یا Supabase) بگذارید.
-2. `npx prisma db push` یا migrate را روی دیتابیس production اجرا کنید.
-3. روی Vercel / هر هاست Node دیگر دیپلوی کنید؛ متغیرهای `DATABASE_URL`, `JWT_SECRET`, `ANTHROPIC_API_KEY` را در تنظیمات هاست قرار دهید.
+1. یک دیتابیس Postgres رایگان بسازید (مثلاً [Neon](https://neon.tech)) و آدرس اتصال آن را کپی کنید.
+2. ریپازیتوری را در Netlify (یا Vercel، یا هر هاست دیگر Node) ایمپورت کنید.
+3. متغیرهای محیطی `DATABASE_URL` (آدرس Postgres)، `JWT_SECRET` (یک رشتهٔ تصادفی بلند) و در صورت نیاز `ANTHROPIC_API_KEY` را در تنظیمات سایت قرار دهید.
+4. Deploy کنید.
+5. یک‌بار از ترمینال محلی، با همان `DATABASE_URL`، دستور `npx prisma db push` را اجرا کنید تا جدول‌ها روی دیتابیس production ساخته شوند.
 
 ## نکات امنیتی که از قبل رعایت شده
 

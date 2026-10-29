@@ -1,14 +1,16 @@
 // Prisma schema for AgentVerse
-// Default datasource is SQLite for zero-config local dev.
-// Swap provider to "postgresql" and set DATABASE_URL to a Postgres connection
-// string for production (Neon, Supabase, Railway, etc.) — no model changes needed.
+// Datasource is PostgreSQL, for deploying on serverless hosts (Netlify, Vercel, etc.)
+// where a local SQLite file does not persist. Set DATABASE_URL to a Postgres
+// connection string (Neon, Supabase, Railway, etc.) — no model changes needed.
+// For local-only development without a Postgres server, you can switch
+// provider back to "sqlite" and use DATABASE_URL="file:./dev.db".
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
